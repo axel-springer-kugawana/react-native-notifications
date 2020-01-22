@@ -18,6 +18,10 @@ public class PushNotificationProps {
         return mBundle.getString("body");
     }
 
+    public String getGroup() {
+        return mBundle.getString("group");
+    }
+
     public Bundle asBundle() {
         return (Bundle) mBundle.clone();
     }
