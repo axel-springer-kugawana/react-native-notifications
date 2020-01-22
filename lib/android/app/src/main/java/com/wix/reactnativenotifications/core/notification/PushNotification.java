@@ -164,7 +164,7 @@ public class PushNotification implements IPushNotification {
         if (Build.VERSION.SDK_INT >= 20) {
             String groupName = mNotificationProps.getGroup();
             if (groupName != null)
-                notification.setGroup(groupName)
+                notification.setGroup(groupName);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
