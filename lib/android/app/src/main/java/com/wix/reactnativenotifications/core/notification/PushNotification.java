@@ -165,7 +165,11 @@ public class PushNotification implements IPushNotification {
             String groupName = mNotificationProps.getGroup();
             if (groupName != null)
                 notification.setGroup(groupName);
+            else
+                notification.setContentTitle("native group is null");
         }
+        else
+            notification.setContentTitle("native troll " + Build.VERSION.SDK_INT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
