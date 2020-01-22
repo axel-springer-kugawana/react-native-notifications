@@ -34,4 +34,12 @@ public class PushNotificationProps {
     protected PushNotificationProps copy() {
         return new PushNotificationProps((Bundle) mBundle.clone());
     }
+
+    public boolean getGroupSummary() {
+        return mBundle.getBoolean("groupSummary");
+    }
+
+    public String getGroupName() {
+        return mBundle.getString("groupName");
+    }
 }
