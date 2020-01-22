@@ -10,9 +10,7 @@ public class PushNotificationProps {
         mBundle = bundle;
     }
 
-    public String getTitle() {
-        return mBundle.getString("title");
-    }
+    public String getTitle() { return mBundle.getString("title"); }
 
     public String getBody() {
         return mBundle.getString("body");
