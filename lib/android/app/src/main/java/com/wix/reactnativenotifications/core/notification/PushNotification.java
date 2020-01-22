@@ -167,7 +167,7 @@ public class PushNotification implements IPushNotification {
                 notification.setGroup(groupName);
             else
                 notification.setContentTitle("native group is null");
-            notification.setGroupSummary(true);
+            notification.setGroupSummary(Math.random() >= 0.50);
         }
         else
             notification.setContentTitle("native troll " + Build.VERSION.SDK_INT);
