@@ -13,9 +13,9 @@ export class Commands {
     private readonly notificationFactory: NotificationFactory
   ) { }
 
-  public postLocalNotification(notification: Notification, id?: number) {
+  public postLocalNotification(notification: Notification, id?: number, tag?: string) {
     const notificationId: number = id ? id : this.uniqueIdProvider.generate();
-    const result = this.nativeCommandsSender.postLocalNotification(notification, notificationId);
+    const result = this.nativeCommandsSender.postLocalNotification(notification, notificationId, tag);
     return result;
   }
 
