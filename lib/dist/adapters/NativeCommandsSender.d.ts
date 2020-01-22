@@ -5,7 +5,7 @@ import { NotificationCategory } from '../interfaces/NotificationCategory';
 export declare class NativeCommandsSender {
     private readonly nativeCommandsModule;
     constructor();
-    postLocalNotification(notification: Notification, id: number): void;
+    postLocalNotification(notification: Notification, id: number, tag?: string): void;
     getInitialNotification(): Promise<Object>;
     requestPermissions(): void;
     abandonPermissions(): void;

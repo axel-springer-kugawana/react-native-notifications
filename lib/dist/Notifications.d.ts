@@ -22,7 +22,7 @@ export declare class NotificationsRoot {
     /**
      * postLocalNotification
      */
-    postLocalNotification(notification: Notification, id: number): void;
+    postLocalNotification(notification: Notification, id: number, tag: string): void;
     /**
      * getInitialNotification
      */

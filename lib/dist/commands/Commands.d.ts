@@ -9,7 +9,7 @@ export declare class Commands {
     private readonly uniqueIdProvider;
     private readonly notificationFactory;
     constructor(nativeCommandsSender: NativeCommandsSender, uniqueIdProvider: UniqueIdProvider, notificationFactory: NotificationFactory);
-    postLocalNotification(notification: Notification, id?: number): void;
+    postLocalNotification(notification: Notification, id?: number, tag?: string): void;
     getInitialNotification(): Promise<Notification | undefined>;
     requestPermissions(): void;
     abandonPermissions(): void;
