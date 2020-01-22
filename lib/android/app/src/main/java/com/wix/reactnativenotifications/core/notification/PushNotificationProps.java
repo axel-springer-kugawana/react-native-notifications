@@ -35,8 +35,8 @@ public class PushNotificationProps {
         return new PushNotificationProps((Bundle) mBundle.clone());
     }
 
-    public boolean getGroupSummary() {
-        return mBundle.getBoolean("groupSummary");
+    public boolean getIsGroupSummary() {
+        return mBundle.getBoolean("isGroupSummary");
     }
 
     public String getGroupName() {
