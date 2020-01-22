@@ -8,12 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.WritableMap;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade.AppVisibilityListener;
@@ -63,7 +59,7 @@ public class PushNotification implements IPushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        postNotification(null);
+        postNotification(null,null);
         notifyReceivedToJS();
     }
 
@@ -74,8 +70,8 @@ public class PushNotification implements IPushNotification {
     }
 
     @Override
-    public int onPostRequest(Integer notificationId) {
-        return postNotification(notificationId);
+    public int onPostRequest(Integer notificationId, String tag) {
+        return postNotification(notificationId, tag);
     }
 
     @Override
@@ -83,10 +79,10 @@ public class PushNotification implements IPushNotification {
         return mNotificationProps.copy();
     }
 
-    protected int postNotification(Integer notificationId) {
+    protected int postNotification(Integer notificationId, String tag) {
         final PendingIntent pendingIntent = getCTAPendingIntent();
         final Notification notification = buildNotification(pendingIntent);
-        return postNotification(notification, notificationId);
+        return postNotification(notification, notificationId,tag);
     }
 
     protected void digestNotification() {
@@ -142,7 +138,6 @@ public class PushNotification implements IPushNotification {
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
-
         String CHANNEL_ID = "channel_01";
         String CHANNEL_NAME = "Channel Name";
 
@@ -153,6 +148,10 @@ public class PushNotification implements IPushNotification {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
 
+        if (mNotificationProps.getStyle().equals("inbox")) {
+            Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+            notification.setStyle(inboxStyle);
+        }
 
         int resourceID = mContext.getResources().getIdentifier("notification_icon", "drawable", mContext.getPackageName());
         if (resourceID != 0) {
@@ -160,17 +159,6 @@ public class PushNotification implements IPushNotification {
         } else {
             notification.setSmallIcon(mContext.getApplicationInfo().icon);
         }
-
-        if (Build.VERSION.SDK_INT >= 20) {
-            String groupName = mNotificationProps.getGroup();
-            if (groupName != null)
-                notification.setGroup(groupName);
-            else
-                notification.setContentTitle("native group is null");
-            notification.setGroupSummary(Math.random() >= 0.50);
-        }
-        else
-            notification.setContentTitle("native troll " + Build.VERSION.SDK_INT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
@@ -184,15 +172,23 @@ public class PushNotification implements IPushNotification {
         return notification;
     }
 
-    protected int postNotification(Notification notification, Integer notificationId) {
+    protected int postNotification(Notification notification, Integer notificationId,String tag) {
         int id = notificationId != null ? notificationId : createNotificationId(notification);
-        postNotification(id, notification);
+        postNotification(id, tag, notification);
         return id;
     }
 
-    protected void postNotification(int id, Notification notification) {
+    protected void postNotification(int id,String tag, Notification notification) {
         final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(id, notification);
+        if (!mNotificationProps.getStyle().equals("inbox"))
+            notificationManager.notify(tag,id,notification);
+        else
+        {
+            if (tag != null)
+                notificationManager.notify(Integer.toString(id),tag.hashCode(),notification);
+            else
+                throw new IllegalStateException("Can't use inbox style if tag is null.");
+        }
     }
 
     protected void clearAllNotifications() {

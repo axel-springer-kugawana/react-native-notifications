@@ -9,12 +9,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Message;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.WritableMap;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade.AppVisibilityListener;
@@ -267,7 +263,7 @@ public class PushNotificationTest {
         // Act
 
         final PushNotification uut = createUUT();
-        uut.onPostRequest(null);
+        uut.onPostRequest(null, tag);
 
         // Assert
 
@@ -281,8 +277,8 @@ public class PushNotificationTest {
 
     @Test
     public void onPostRequest_withValidDataButNoId_idsShouldBeUnique() throws Exception {
-        createUUT().onPostRequest(null);
-        createUUT().onPostRequest(null);
+        createUUT().onPostRequest(null, tag);
+        createUUT().onPostRequest(null, tag);
 
         ArgumentCaptor<Integer> idsCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(mNotificationManager, times(2)).notify(idsCaptor.capture(), any(Notification.class));
@@ -294,7 +290,7 @@ public class PushNotificationTest {
         final int id = 666;
 
         final PushNotification uut = createUUT();
-        uut.onPostRequest(id);
+        uut.onPostRequest(id, tag);
 
         verify(mNotificationManager).notify(eq(id), any(Notification.class));
     }
@@ -302,7 +298,7 @@ public class PushNotificationTest {
     @Test
     public void onPostRequest_emptyData_postNotification() throws Exception {
         PushNotification uut = createUUT(new Bundle());
-        uut.onPostRequest(null);
+        uut.onPostRequest(null, tag);
 
         verify(mNotificationManager).notify(anyInt(), any(Notification.class));
     }

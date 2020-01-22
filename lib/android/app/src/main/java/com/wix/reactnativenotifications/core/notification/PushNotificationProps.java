@@ -36,4 +36,8 @@ public class PushNotificationProps {
     protected PushNotificationProps copy() {
         return new PushNotificationProps((Bundle) mBundle.clone());
     }
+
+    public String getStyle() {
+        return mBundle.getString("style");
+    }
 }

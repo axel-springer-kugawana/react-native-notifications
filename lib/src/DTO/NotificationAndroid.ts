@@ -18,7 +18,7 @@ export class NotificationAndroid extends Notification {
     return this.payload.sound;
   }
 
-  get group(): string {
-    return this.payload.group;
+  get style(): string {
+    return this.payload.style;
   }
 }
